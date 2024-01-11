@@ -24,6 +24,11 @@ loadModels();
 const modal = new bootstrap.Modal(document.getElementById('webcamModal'));
 
 document.addEventListener('DOMContentLoaded', async function() {
+    try {
+        await navigator.mediaDevices.getUserMedia({ video: true });
+    } catch (error) {
+        console.error('Error accessing media devices.', error);
+    }
     const devices = await navigator.mediaDevices.enumerateDevices();
     const videoDevices = devices.filter(device => device.kind === 'videoinput');
     const dropdown = document.getElementById('cameraDropdown');
@@ -48,6 +53,14 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 document.querySelector('.modal-footer .btn-primary').addEventListener('click', async () => {
     const selectedOption = document.querySelector('.dropdown-item.active');
+    const error = document.getElementById('cameraError');
+    if (!selectedOption) {
+        error.textContent = 'Please select a camera';
+        error.style.color = 'red';
+        error.style.display = 'block';
+        return;
+    }
+    error.style.display = 'none';
     const deviceId = selectedOption.dataset.deviceId;
     const stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId } });
     const webcam = document.createElement('video');

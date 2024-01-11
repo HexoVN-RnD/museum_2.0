@@ -9,7 +9,7 @@
     <div class="container">
         <h1 class="mt-5">Simple Style Transfer</h1>
         <div id="webcam-container" class="mt-4 full-width"></div>
-        <button id="webcam-button" class="btn btn-primary overlay-button">Access Webcam</button>
+        <button id="webcam-button" class="btn btn-primary overlay-button">Change Webcam</button>
         <canvas id="canvas" class="d-none"></canvas>
         <img id="captured-image" src="" alt="captured image" class="d-none img-fluid full-width">
         <div class="overlay-button">
@@ -34,6 +34,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <p id="cameraError" style="display: none;"></p>
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                           Select Camera
