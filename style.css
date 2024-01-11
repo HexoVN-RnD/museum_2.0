@@ -32,10 +32,6 @@ select option {
     background-color: white;
 }
 
-.modal-dialog {
-    margin-top: 15%;
-}
-
 .dropdown-menu.bg-dark a {
     color: white;
 }
