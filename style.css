@@ -44,18 +44,23 @@ select option {
     background-color: transparent; border: none;
 }
 
-.modal-xl .modal-content {
+.modal-lg .modal-content {
     font-size: 1.5rem; /* Adjust as needed */
+    padding: 1.5rem;
 }
 
-.modal-xl .modal-title {
+.modal-lg .modal-title {
     font-size: 2rem; /* Adjust as needed */
 }
 
-.modal-xl .btn {
+.modal-lg .btn {
     font-size: 1.5rem; /* Adjust as needed */
 }
 
-.modal-xl .dropdown-toggle {
+.modal-lg .dropdown-toggle {
+    font-size: 1.5rem; /* Adjust as needed */
+}
+
+.modal-lg .dropdown-menu {
     font-size: 1.5rem; /* Adjust as needed */
 }
