@@ -1,0 +1,41 @@
+body {
+    background-color: black;
+    color: white;
+}
+.full-width {
+    width: 100%;
+    height: auto;
+}
+.overlay-button {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.modal-content {
+    background-color: black;
+    color: white;
+    border: 1px solid white; /* Add a white border */
+}
+
+/* Style the dropdown list */
+select {
+    color: white;
+    background-color: black;
+    border: 1px solid white;
+}
+
+/* Style the dropdown options */
+select option {
+    color: black;
+    background-color: white;
+}
+
+.modal-dialog {
+    margin-top: 15%;
+}
+
+.dropdown-menu.bg-dark a {
+    color: white;
+}
