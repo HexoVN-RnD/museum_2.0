@@ -63,10 +63,10 @@ document.querySelector('.modal-footer .btn-primary').addEventListener('click', a
     error.style.display = 'none';
     const deviceId = selectedOption.dataset.deviceId;
     const stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId } });
-    const webcam = document.createElement('video');
+    const webcam = document.getElementById('webcam-video');
     webcam.srcObject = stream;
     await webcam.play();
-    document.getElementById('webcam-container').appendChild(webcam);
+    webcam.style.display = 'block'; // Show the video element
     const canvas = document.getElementById('canvas');
     canvas.width = webcam.videoWidth;
     canvas.height = webcam.videoHeight;
@@ -78,20 +78,8 @@ document.querySelector('.modal-footer .btn-primary').addEventListener('click', a
     modal.hide();
 });
 
-document.getElementById('webcam-button').addEventListener('click', async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-    const webcam = document.createElement('video');
-    webcam.srcObject = stream;
-    await webcam.play();
-    document.getElementById('webcam-container').appendChild(webcam);
-    const canvas = document.getElementById('canvas');
-    canvas.width = webcam.videoWidth;
-    canvas.height = webcam.videoHeight;
-    webcam.addEventListener('click', () => {
-        canvas.getContext('2d').drawImage(webcam, 0, 0);
-        document.getElementById('captured-image').src = canvas.toDataURL('image/png');
-        document.getElementById('transfer-button').classList.remove('d-none');
-    });
+document.getElementById('webcam-button').addEventListener('click', () => {
+    modal.show();
 });
 
 document.getElementById('transfer-button').addEventListener('click', async () => {

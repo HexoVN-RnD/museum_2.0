@@ -39,3 +39,7 @@ select option {
 .dropdown-menu.bg-dark a {
     color: white;
 }
+
+#webcam-button {
+    background-color: transparent; border: none;
+}
