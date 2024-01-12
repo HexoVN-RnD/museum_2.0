@@ -105,6 +105,22 @@
         </div>
     </div>
 
+    <!-- Error Modal -->
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h5 class="modal-title" id="errorModalLabel">Error</h5>
+                    <p class="error-message">An error occurred. Please try again later.</p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Settings Modal -->
     <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -130,10 +146,11 @@
                                         <!-- Style options will be added here by JavaScript -->
                                     </ul>
                                 </div>
+                                <input type="file" id="file-input" accept="image/*" style="display: none;">
                             </div>
                         </div>
                         <div class="row mx-5 mb-5">
-                            <img id="style-image" src="style.jpg" alt="style image" class="img-fluid full-width">
+                            <img id="style-image" src="style1.jpg" alt="style image" class="img-fluid full-width">
                         </div>
 
                         <div class="row mx-5 mb-2">
@@ -142,7 +159,7 @@
 
                         <div class="row mx-5 mb-5">
                             <div class="col-10">
-                                <input type="range" min="0" max="100" value="100" class="custom-range centered"
+                                <input type="range" min="240" max="720" value="480" class="form-range centered"
                                     id="style-image-size">
                             </div>
 
@@ -157,7 +174,7 @@
 
                         <div class="row mx-5 mb-5">
                             <div class="col-10">
-                                <input type="range" min="0" max="100" value="100" class="custom-range centered"
+                                <input type="range" min="240" max="720" value="480" class="form-range centered"
                                     id="output-image-size">
 
                             </div>
@@ -173,9 +190,8 @@
 
                         <div class="row mx-5 mb-4">
                             <div class="col-10">
-                                <input type="range" min="0" max="100" value="100" class="custom-range centered"
+                                <input type="range" min="1" max="100" value="100" class="form-range centered"
                                     id="style-strength">
-
                             </div>
 
                             <div class="col-2 text-end">
@@ -183,13 +199,10 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
-
-    
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"

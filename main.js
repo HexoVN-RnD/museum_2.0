@@ -7,6 +7,38 @@ const camModal = new bootstrap.Modal(document.getElementById('webcamModal'));
 const imgModal = new bootstrap.Modal(document.getElementById('imageModal'));
 const outModal = new bootstrap.Modal(document.getElementById('outputModal'));
 const qrModal = new bootstrap.Modal(document.getElementById('qrModal'));
+const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+
+// Define the style options
+const styleOptions = [
+    { name: 'Select from file' },
+    { name: 'Style 1', src: 'style1.jpg' },
+    { name: 'Style 2', src: 'style2.jpg' },
+    { name: 'Style 3', src: 'style3.jpg' },
+    { name: 'Style 4', src: 'style4.jpg' },
+    { name: 'Style 5', src: 'style5.jpg' },
+    { name: 'Style 6', src: 'style6.jpg' },
+];
+
+// Get the dropdown and the style image element
+const styleDropdown = document.getElementById('styleDropdown');
+const styleImage = document.getElementById('style-image');
+const fileInput = document.getElementById('file-input');
+
+// Get the input elements and the span elements
+const styleImageSizeInput = document.getElementById('style-image-size');
+const styleImageSizeValue = document.getElementById('style-image-size-value');
+
+const outputImageSizeInput = document.getElementById('output-image-size');
+const outputImageSizeValue = document.getElementById('output-image-size-value');
+
+const styleStrengthInput = document.getElementById('style-strength');
+const styleStrengthValue = document.getElementById('style-strength-value');
+
+// Set the initial values
+styleImageSizeValue.textContent = styleImageSizeInput.value;
+outputImageSizeValue.textContent = outputImageSizeInput.value;
+styleStrengthValue.textContent = styleStrengthInput.value;
 
 async function loadModels() {
     console.log('Loading models..');
@@ -54,6 +86,38 @@ document.addEventListener('DOMContentLoaded', async function () {
     camModal.show();
 });
 
+// Add the options to the dropdown
+for (const option of styleOptions) {
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.className = 'dropdown-item text-white';
+    a.href = '#';
+    a.textContent = option.name;
+    a.addEventListener('click', function(event) {
+        event.preventDefault();
+        if (option.name === 'Select from file') {
+            // Trigger the file input when the "Select from file" option is selected
+            fileInput.click();
+        } else {
+            // Change the source of the style image when the option is selected
+            styleImage.src = option.src;
+        }
+    });
+    li.appendChild(a);
+    styleDropdown.appendChild(li);
+}
+
+// Change the source of the style image when a file is selected
+fileInput.addEventListener('change', function() {
+    if (this.files && this.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            styleImage.src = e.target.result;
+        };
+        reader.readAsDataURL(this.files[0]);
+    }
+});
+
 document.querySelector('.modal-footer .btn-primary').addEventListener('click', async () => {
     const selectedOption = document.querySelector('.dropdown-item.active');
     const error = document.getElementById('cameraError');
@@ -85,6 +149,19 @@ document.getElementById('webcam-button').addEventListener('click', () => {
     camModal.show();
 });
 
+// Add an input event listener to each input element
+styleImageSizeInput.addEventListener('input', function () {
+    styleImageSizeValue.textContent = this.value;
+});
+
+outputImageSizeInput.addEventListener('input', function () {
+    outputImageSizeValue.textContent = this.value;
+});
+
+styleStrengthInput.addEventListener('input', function () {
+    styleStrengthValue.textContent = this.value;
+});
+
 document.getElementById('img-download-button').addEventListener('click', () => {
     const capturedImage = document.getElementById('captured-image');
     const a = document.createElement('a');
@@ -108,113 +185,126 @@ document.getElementById('output-download-button').addEventListener('click', () =
 });
 
 document.getElementById('transfer-button').addEventListener('click', async () => {
-    document.getElementById('loading-screen').style.display = 'flex';
-    const imgElement = document.getElementById('captured-image');
+    try {
+        document.getElementById('loading-screen').style.display = 'flex';
+        const imgElement = document.getElementById('captured-image');
 
-    // Resize the content image
-    let canvas = document.createElement('canvas');
-    let ctx = canvas.getContext('2d');
-    canvas.width = 720;  // Set this to the desired width
-    canvas.height = imgElement.height * (canvas.width / imgElement.width);  // Calculate the height to maintain aspect ratio
-    ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
-    let resizedImageElement = document.createElement('img');
-    resizedImageElement.src = canvas.toDataURL();
-    let img = await new Promise((resolve) => {
-        resizedImageElement.onload = () => {
-            resolve(tf.browser.fromPixels(resizedImageElement));
-        };
-    });
-
-    // Load the style image
-    const styleImageElement = document.createElement('img');
-    styleImageElement.src = 'style.jpg';  // Path to your style image
-    await new Promise((resolve) => {
-        styleImageElement.onload = resolve;
-    });
-
-    // Resize the style image
-    let styleCanvas = document.createElement('canvas');
-    let styleCtx = styleCanvas.getContext('2d');
-    styleCanvas.width = 300;  // Set this to the desired width
-    styleCanvas.height = styleImageElement.height * (300 / styleImageElement.width);  // Calculate the height to maintain aspect ratio
-    styleCtx.drawImage(styleImageElement, 0, 0, styleCanvas.width, styleCanvas.height);
-    let resizedStyleImageElement = document.createElement('img');
-    resizedStyleImageElement.src = styleCanvas.toDataURL();
-    let styleImg = await new Promise((resolve) => {
-        resizedStyleImageElement.onload = () => {
-            resolve(tf.browser.fromPixels(resizedStyleImageElement));
-        };
-    });
-
-
-    // Select the style prediction model
-    let styleModel;
-    switch ('mobileNetStyleModel') {
-        case 'mobileNetStyleModel':
-            styleModel = mobileNetStyleModel;
-            break;
-        case 'inceptionStyleModel':
-            styleModel = inceptionStyleModel;
-            break;
-        default:
-            console.log('Invalid style model name');
-            return;
-    }
-
-    // Select the style transfer model
-    let transferModel;
-    switch ('separableTransformerModel') {
-        case 'separableTransformerModel':
-            transferModel = separableTransformerModel;
-            break;
-        case 'originalTransformerModel':
-            transferModel = originalTransformerModel;
-            break;
-        default:
-            console.log('Invalid transfer model name');
-            return;
-    }
-
-    // Extract the style of the style image
-    const styleBottleneck = tf.tidy(() => styleModel.predict(styleImg.toFloat().div(tf.scalar(255)).expandDims()));
-
-    // Adjust the style strength
-    const styleRatio = 0.9;  // Set this to the desired style strength
-    let adjustedBottleneck;
-    if (styleRatio !== 1.0) {
-        const identityBottleneck = tf.tidy(() => styleModel.predict(img.toFloat().div(tf.scalar(255)).expandDims()));
-        adjustedBottleneck = tf.tidy(() => {
-            const styleBottleneckScaled = styleBottleneck.mul(tf.scalar(styleRatio));
-            const identityBottleneckScaled = identityBottleneck.mul(tf.scalar(1.0 - styleRatio));
-            return styleBottleneckScaled.add(identityBottleneckScaled);
+        // Resize the content image
+        let canvas = document.createElement('canvas');
+        let ctx = canvas.getContext('2d');
+        canvas.width = outputImageSizeInput.value;
+        console.log(canvas.width);
+        canvas.height = imgElement.height * (canvas.width / imgElement.width);
+        ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
+        let resizedImageElement = document.createElement('img');
+        resizedImageElement.src = canvas.toDataURL();
+        let img = await new Promise((resolve) => {
+            resizedImageElement.onload = () => {
+                resolve(tf.browser.fromPixels(resizedImageElement));
+            };
         });
-        styleBottleneck.dispose();
-        identityBottleneck.dispose();
-    } else {
-        adjustedBottleneck = styleBottleneck;
+
+        // Wait for the image to load
+        await new Promise((resolve) => {
+            if (styleImage.complete) {
+                resolve();
+            } else {
+                styleImage.onload = resolve;
+            }
+        });
+
+        // Resize the style image
+        let styleCanvas = document.createElement('canvas');
+        let styleCtx = styleCanvas.getContext('2d');
+        styleCanvas.width = styleImageSizeInput.value;
+        console.log(styleCanvas.width);
+        styleCanvas.height = styleImage.height * (300 / styleImage.width);
+        styleCtx.drawImage(styleImage, 0, 0, styleCanvas.width, styleCanvas.height);
+        let resizedStyleImageElement = document.createElement('img');
+        resizedStyleImageElement.src = styleCanvas.toDataURL();
+        let styleImg = await new Promise((resolve) => {
+            resizedStyleImageElement.onload = () => {
+                resolve(tf.browser.fromPixels(resizedStyleImageElement));
+            };
+        });
+
+
+        // Select the style prediction model
+        let styleModel;
+        switch ('mobileNetStyleModel') {
+            case 'mobileNetStyleModel':
+                styleModel = mobileNetStyleModel;
+                break;
+            case 'inceptionStyleModel':
+                styleModel = inceptionStyleModel;
+                break;
+            default:
+                console.log('Invalid style model name');
+                return;
+        }
+
+        // Select the style transfer model
+        let transferModel;
+        switch ('separableTransformerModel') {
+            case 'separableTransformerModel':
+                transferModel = separableTransformerModel;
+                break;
+            case 'originalTransformerModel':
+                transferModel = originalTransformerModel;
+                break;
+            default:
+                console.log('Invalid transfer model name');
+                return;
+        }
+
+        // Extract the style of the style image
+        const styleBottleneck = tf.tidy(() => styleModel.predict(styleImg.toFloat().div(tf.scalar(255)).expandDims()));
+
+        // Adjust the style strength
+        const styleRatio = styleStrengthInput.value / 100;
+        let adjustedBottleneck;
+        if (styleRatio !== 1.0) {
+            const identityBottleneck = tf.tidy(() => styleModel.predict(img.toFloat().div(tf.scalar(255)).expandDims()));
+            adjustedBottleneck = tf.tidy(() => {
+                const styleBottleneckScaled = styleBottleneck.mul(tf.scalar(styleRatio));
+                const identityBottleneckScaled = identityBottleneck.mul(tf.scalar(1.0 - styleRatio));
+                return styleBottleneckScaled.add(identityBottleneckScaled);
+            });
+            styleBottleneck.dispose();
+            identityBottleneck.dispose();
+        } else {
+            adjustedBottleneck = styleBottleneck;
+        }
+
+        // Apply the style to the content image
+        const resultImg = tf.tidy(() => transferModel.predict([img.toFloat().div(tf.scalar(255)).expandDims(), adjustedBottleneck]).squeeze().mul(255).cast('int32'));
+
+        const outputCanvas = document.createElement('canvas');
+        outputCanvas.width = img.shape[1];
+        outputCanvas.height = img.shape[0];
+        await tf.browser.toPixels(resultImg, outputCanvas);
+
+        // Show the result
+        document.getElementById('output-image').src = outputCanvas.toDataURL('image/png');
+        outModal.show();
+        imgModal.hide();
+        document.getElementById('loading-screen').style.display = 'none';
+
+        // Dispose tensors
+        img.dispose();
+        styleImg.dispose();
+        adjustedBottleneck.dispose();
+        resultImg.dispose();
+
+    } catch (error) {
+        console.error('Error during style transfer:', error);
+        // Display an error message to the user
+        document.getElementById('error-message').textContent = 'The image size is too large for the current device to handle. Please try reducing the style image or output image size.';
+        document.getElementById('loading-screen').style.display = 'none';
+        errorModal.show();
     }
-
-    // Apply the style to the content image
-    const resultImg = tf.tidy(() => transferModel.predict([img.toFloat().div(tf.scalar(255)).expandDims(), adjustedBottleneck]).squeeze().mul(255).cast('int32'));
-
-    const outputCanvas = document.createElement('canvas');
-    outputCanvas.width = img.shape[1];
-    outputCanvas.height = img.shape[0];
-    await tf.browser.toPixels(resultImg, outputCanvas);
-
-    // Show the result
-    document.getElementById('output-image').src = outputCanvas.toDataURL('image/png');
-    outModal.show();
-    imgModal.hide();
-    document.getElementById('loading-screen').style.display = 'none';
-
-    // Dispose tensors
-    img.dispose();
-    styleImg.dispose();
-    adjustedBottleneck.dispose();
-    resultImg.dispose();
 });
 
-document.getElementById('qr-button').addEventListener('click', () => {   
+document.getElementById('qr-button').addEventListener('click', () => {
     qrModal.show();
 });

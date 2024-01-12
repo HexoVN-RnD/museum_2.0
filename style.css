@@ -104,6 +104,6 @@ select option {
     display: flex;
     align-items: center;
 }
-.custom-range {
+.form-range {
     width: 100%;
 }
