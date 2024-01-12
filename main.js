@@ -3,6 +3,11 @@ let inceptionStyleModel;
 let originalTransformerModel;
 let separableTransformerModel;
 
+const camModal = new bootstrap.Modal(document.getElementById('webcamModal'));
+const imgModal = new bootstrap.Modal(document.getElementById('imageModal'));
+const outModal = new bootstrap.Modal(document.getElementById('outputModal'));
+const qrModal = new bootstrap.Modal(document.getElementById('qrModal'));
+
 async function loadModels() {
     console.log('Loading models..');
 
@@ -21,9 +26,7 @@ async function loadModels() {
 
 loadModels();
 
-const modal = new bootstrap.Modal(document.getElementById('webcamModal'));
-
-document.addEventListener('DOMContentLoaded', async function() {
+document.addEventListener('DOMContentLoaded', async function () {
     try {
         await navigator.mediaDevices.getUserMedia({ video: true });
     } catch (error) {
@@ -40,7 +43,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         link.href = '#';
         link.dataset.deviceId = device.deviceId;
         link.textContent = device.label || `Camera ${i + 1}`;
-        link.addEventListener('click', function() {
+        link.addEventListener('click', function () {
             dropdownButton.textContent = this.textContent;
             document.querySelector('.dropdown-item.active')?.classList.remove('active');
             this.classList.add('active');
@@ -48,7 +51,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         option.appendChild(link);
         dropdown.appendChild(option);
     });
-    modal.show();
+    camModal.show();
 });
 
 document.querySelector('.modal-footer .btn-primary').addEventListener('click', async () => {
@@ -73,23 +76,46 @@ document.querySelector('.modal-footer .btn-primary').addEventListener('click', a
     webcam.addEventListener('click', () => {
         canvas.getContext('2d').drawImage(webcam, 0, 0);
         document.getElementById('captured-image').src = canvas.toDataURL('image/png');
-        document.getElementById('transfer-button').classList.remove('d-none');
+        imgModal.show();
     });
-    modal.hide();
+    camModal.hide();
 });
 
 document.getElementById('webcam-button').addEventListener('click', () => {
-    modal.show();
+    camModal.show();
+});
+
+document.getElementById('img-download-button').addEventListener('click', () => {
+    const capturedImage = document.getElementById('captured-image');
+    const a = document.createElement('a');
+    a.href = capturedImage.src;
+    const date = new Date();
+    const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const [{ value: month }, , { value: day }, , { value: year }, , { value: hour }, , { value: minute }, , { value: second }] = dateTimeFormat.formatToParts(date);
+    a.download = `image_${year}${month}${day}_${hour}${minute}${second}.png`;
+    a.click();
+});
+
+document.getElementById('output-download-button').addEventListener('click', () => {
+    const outputImage = document.getElementById('output-image');
+    const a = document.createElement('a');
+    a.href = outputImage.src;
+    const date = new Date();
+    const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const [{ value: month }, , { value: day }, , { value: year }, , { value: hour }, , { value: minute }, , { value: second }] = dateTimeFormat.formatToParts(date);
+    a.download = `output_${year}${month}${day}_${hour}${minute}${second}.png`;
+    a.click();
 });
 
 document.getElementById('transfer-button').addEventListener('click', async () => {
+    document.getElementById('loading-screen').style.display = 'flex';
     const imgElement = document.getElementById('captured-image');
 
     // Resize the content image
     let canvas = document.createElement('canvas');
     let ctx = canvas.getContext('2d');
-    canvas.width = 300;  // Set this to the desired width
-    canvas.height = imgElement.height * (300 / imgElement.width);  // Calculate the height to maintain aspect ratio
+    canvas.width = 720;  // Set this to the desired width
+    canvas.height = imgElement.height * (canvas.width / imgElement.width);  // Calculate the height to maintain aspect ratio
     ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
     let resizedImageElement = document.createElement('img');
     resizedImageElement.src = canvas.toDataURL();
@@ -153,7 +179,7 @@ document.getElementById('transfer-button').addEventListener('click', async () =>
     const styleBottleneck = tf.tidy(() => styleModel.predict(styleImg.toFloat().div(tf.scalar(255)).expandDims()));
 
     // Adjust the style strength
-    const styleRatio = 0.5;  // Set this to the desired style strength
+    const styleRatio = 0.9;  // Set this to the desired style strength
     let adjustedBottleneck;
     if (styleRatio !== 1.0) {
         const identityBottleneck = tf.tidy(() => styleModel.predict(img.toFloat().div(tf.scalar(255)).expandDims()));
@@ -175,11 +201,20 @@ document.getElementById('transfer-button').addEventListener('click', async () =>
     outputCanvas.width = img.shape[1];
     outputCanvas.height = img.shape[0];
     await tf.browser.toPixels(resultImg, outputCanvas);
+
+    // Show the result
     document.getElementById('output-image').src = outputCanvas.toDataURL('image/png');
+    outModal.show();
+    imgModal.hide();
+    document.getElementById('loading-screen').style.display = 'none';
 
     // Dispose tensors
     img.dispose();
     styleImg.dispose();
     adjustedBottleneck.dispose();
     resultImg.dispose();
+});
+
+document.getElementById('qr-button').addEventListener('click', () => {   
+    qrModal.show();
 });

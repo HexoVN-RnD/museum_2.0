@@ -2,21 +2,17 @@ body {
     background-color: black;
     color: white;
 }
+
 .full-width {
     width: 100%;
     height: auto;
-}
-.overlay-button {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
 }
 
 .modal-content {
     background-color: black;
     color: white;
-    border: 1px solid white; /* Add a white border */
+    border: 1px solid white;
+    /* Add a white border */
 }
 
 /* Style the dropdown list */
@@ -36,27 +32,78 @@ select option {
     color: white;
 }
 
-#webcam-button {
-    background-color: transparent; border: none;
-}
-
 .modal-lg .modal-content {
-    font-size: 1.5rem; /* Adjust as needed */
+    font-size: 1.5rem;
     padding: 1.5rem;
 }
 
 .modal-lg .modal-title {
-    font-size: 2rem; /* Adjust as needed */
+    font-size: 2rem;
 }
 
 .modal-lg .btn {
-    font-size: 1.5rem; /* Adjust as needed */
+    font-size: 1.5rem;
 }
 
 .modal-lg .dropdown-toggle {
-    font-size: 1.5rem; /* Adjust as needed */
+    font-size: 1.5rem;
 }
 
 .modal-lg .dropdown-menu {
-    font-size: 1.5rem; /* Adjust as needed */
+    font-size: 1.5rem;
+}
+
+.center {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.overlay-button {
+    position: absolute;
+    font-size: 3rem;
+    padding: 3rem;
+}
+
+#webcam-button {
+    background-color: transparent;
+    border: none;
+    top: 10px;
+    right: 10px;
+}
+
+#settings-button {
+    background-color: transparent;
+    border: none;
+    top: 10px;
+    left: 10px;
+}
+
+@media (max-width: 768px) {
+    .overlay-button {
+        font-size: 3rem;
+        padding: 3rem;
+    }
+}
+
+#loading-screen {
+    z-index: 9999;
+    background: black;
+    display: none;
+}
+
+.spinner-border {
+    width: 5rem;
+    height: 5rem;
+    color: #2ad2c9;
+    border-width: 0.5rem;
+}
+
+.modal-body {
+    display: flex;
+    align-items: center;
+}
+.custom-range {
+    width: 100%;
 }
