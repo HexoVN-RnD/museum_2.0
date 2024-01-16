@@ -24,6 +24,7 @@ const styleOptions = [
 const styleDropdown = document.getElementById('styleDropdown');
 const styleImage = document.getElementById('style-image');
 const fileInput = document.getElementById('file-input');
+const dropdownStyleButton = document.getElementById('dropdownMenuStyleButton');
 
 // Get the input elements and the span elements
 const styleImageSizeInput = document.getElementById('style-image-size');
@@ -101,6 +102,8 @@ for (const option of styleOptions) {
         } else {
             // Change the source of the style image when the option is selected
             styleImage.src = option.src;
+            // Change the dropdown button text to the name of the current style
+            dropdownStyleButton.textContent = option.name;
         }
     });
     li.appendChild(a);
@@ -113,6 +116,8 @@ fileInput.addEventListener('change', function() {
         const reader = new FileReader();
         reader.onload = function(e) {
             styleImage.src = e.target.result;
+            // Change the dropdown button text to "Custom" when a file is selected
+            dropdownStyleButton.textContent = 'Custom style';
         };
         reader.readAsDataURL(this.files[0]);
     }

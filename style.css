@@ -107,3 +107,8 @@ select option {
 .form-range {
     width: 100%;
 }
+
+.modal-footer .btn {
+    font-size: 1.5rem;
+    padding: 10px 20px;
+}
