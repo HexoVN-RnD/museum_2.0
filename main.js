@@ -47,11 +47,11 @@ async function loadModels() {
     mobileNetStyleModel = await tf.loadGraphModel('model_inception_lite/model.json');
     console.log('MobileNet Style Model loaded.');
 
-    inceptionStyleModel = await tf.loadGraphModel('model_inception/model.json');
-    console.log('Inception Style Model loaded.');
+    // inceptionStyleModel = await tf.loadGraphModel('model_inception/model.json');
+    // console.log('Inception Style Model loaded.');
 
-    originalTransformerModel = await tf.loadGraphModel('model_transformer/model.json');
-    console.log('Original Transformer Model loaded.');
+    // originalTransformerModel = await tf.loadGraphModel('model_transformer/model.json');
+    // console.log('Original Transformer Model loaded.');
 
     separableTransformerModel = await tf.loadGraphModel('model_transformer_lite/model.json');
     console.log('Separable Transformer Model loaded.');
