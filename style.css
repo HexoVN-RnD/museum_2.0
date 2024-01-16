@@ -112,3 +112,21 @@ select option {
     font-size: 1.5rem;
     padding: 10px 20px;
 }
+
+#errorModalLabel {
+    font-size: 2rem; /* Increase the font size of the title */
+}
+
+#error-message {
+    font-size: 1.5rem; /* Increase the font size of the error message */
+}
+
+#error-message-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#error-message-box .fas {
+    margin-right: 1rem; /* Add space below the icon */
+}

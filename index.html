@@ -109,9 +109,15 @@
     <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
-                <div class="modal-body">
+                <div class="modal-header">
                     <h5 class="modal-title" id="errorModalLabel">Error</h5>
-                    <p id="error-message">An error occurred. Please try again later.</p>
+                </div>
+
+                <div class="modal-body">
+                    <div class="position-absolute top-50 start-50 translate-middle" id="error-message-box">
+                        <i class="fas fa-exclamation-triangle fa-5x"></i>
+                        <p id="error-message">An error occurred. Please try again later.</p>
+                    </div>
                 </div>
 
                 <div class="modal-footer">
@@ -159,7 +165,7 @@
 
                         <div class="row mx-5 mb-5">
                             <div class="col-10">
-                                <input type="range" min="240" max="720" value="480" class="form-range centered"
+                                <input type="range" min="240" max="720" value="240" class="form-range centered"
                                     id="style-image-size">
                             </div>
 
