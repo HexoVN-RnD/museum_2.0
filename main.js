@@ -36,6 +36,9 @@ const outputImageSizeValue = document.getElementById('output-image-size-value');
 const styleStrengthInput = document.getElementById('style-strength');
 const styleStrengthValue = document.getElementById('style-strength-value');
 
+const imageDownloadButton = document.getElementById('img-download-button');
+const outputDownloadButton = document.getElementById('output-download-button');
+
 // Set the initial values
 styleImageSizeValue.textContent = styleImageSizeInput.value;
 outputImageSizeValue.textContent = outputImageSizeInput.value;
@@ -100,6 +103,13 @@ async function shareImage(elementId) {
 }
 
 loadModels();
+
+window.onload = function() {
+    if (isIOS()) {
+        imageDownloadButton.textContent = 'Share';
+        outputDownloadButton.textContent = 'Share';
+    }
+};
 
 document.addEventListener('DOMContentLoaded', async function () {
     try {
@@ -209,23 +219,23 @@ styleStrengthInput.addEventListener('input', function () {
     styleStrengthValue.textContent = this.value;
 });
 
-document.getElementById('img-download-button').addEventListener('click', () => {
-    if (isIOS()) {
+imageDownloadButton.addEventListener('click', () => {
+    if (!isIOS()) {
         downloadImage('captured-image');
-        console.log('ios device detected');
     }
     else {
         shareImage('captured-image');
+        console.log('ios device detected');
     }
 });
 
-document.getElementById('output-download-button').addEventListener('click', () => {
-    if (isIOS()) {
+outputDownloadButton.addEventListener('click', () => {
+    if (!isIOS()) {
         downloadImage('output-image');
-        console.log('ios device detected');
     }
     else {
         shareImage('output-image');
+        console.log('ios device detected');
     }
 });
 
