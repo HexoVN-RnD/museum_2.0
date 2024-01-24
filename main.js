@@ -57,6 +57,48 @@ async function loadModels() {
     console.log('Separable Transformer Model loaded.');
 }
 
+
+function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
+function downloadImage(elementId) {
+    const capturedImage = document.getElementById(elementId);
+    const a = document.createElement('a');
+    a.href = capturedImage.src;
+    const date = new Date();
+    const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const [{ value: month }, , { value: day }, , { value: year }, , { value: hour }, , { value: minute }, , { value: second }] = dateTimeFormat.formatToParts(date);
+    a.download = `${year}${month}${day}_${hour}${minute}${second}.png`;
+    a.click();
+}
+
+async function shareImage(elementId) {
+    const capturedImage = document.getElementById(elementId);
+    const blob = await fetch(capturedImage.src).then(r => r.blob());
+    const date = new Date();
+    const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const [{ value: month }, , { value: day }, , { value: year }, , { value: hour }, , { value: minute }, , { value: second }] = dateTimeFormat.formatToParts(date);
+    const filename = `${year}${month}${day}_${hour}${minute}${second}.png`;
+    const file = new File([blob], filename, { type: 'image/png' });
+    const filesArray = [file];
+
+    if (navigator.canShare && navigator.canShare({ files: filesArray })) {
+        try {
+            await navigator.share({
+                files: filesArray,
+                title: 'Image',
+                text: 'Share your image',
+            });
+            console.log('Image shared successfully');
+        } catch (error) {
+            console.error(`Error sharing image: ${error.message}`);
+        }
+    } else {
+        console.error("Your system doesn't support sharing files.");
+    }
+}
+
 loadModels();
 
 document.addEventListener('DOMContentLoaded', async function () {
@@ -94,7 +136,7 @@ for (const option of styleOptions) {
     a.className = 'dropdown-item text-white';
     a.href = '#';
     a.textContent = option.name;
-    a.addEventListener('click', function(event) {
+    a.addEventListener('click', function (event) {
         event.preventDefault();
         if (option.name === 'Select from file') {
             // Trigger the file input when the "Select from file" option is selected
@@ -111,10 +153,10 @@ for (const option of styleOptions) {
 }
 
 // Change the source of the style image when a file is selected
-fileInput.addEventListener('change', function() {
+fileInput.addEventListener('change', function () {
     if (this.files && this.files[0]) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             styleImage.src = e.target.result;
             // Change the dropdown button text to "Custom" when a file is selected
             dropdownStyleButton.textContent = 'Custom style';
@@ -168,25 +210,23 @@ styleStrengthInput.addEventListener('input', function () {
 });
 
 document.getElementById('img-download-button').addEventListener('click', () => {
-    const capturedImage = document.getElementById('captured-image');
-    const a = document.createElement('a');
-    a.href = capturedImage.src;
-    const date = new Date();
-    const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    const [{ value: month }, , { value: day }, , { value: year }, , { value: hour }, , { value: minute }, , { value: second }] = dateTimeFormat.formatToParts(date);
-    a.download = `image_${year}${month}${day}_${hour}${minute}${second}.png`;
-    a.click();
+    if (isIOS()) {
+        downloadImage('captured-image');
+        console.log('ios device detected');
+    }
+    else {
+        shareImage('captured-image');
+    }
 });
 
 document.getElementById('output-download-button').addEventListener('click', () => {
-    const outputImage = document.getElementById('output-image');
-    const a = document.createElement('a');
-    a.href = outputImage.src;
-    const date = new Date();
-    const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    const [{ value: month }, , { value: day }, , { value: year }, , { value: hour }, , { value: minute }, , { value: second }] = dateTimeFormat.formatToParts(date);
-    a.download = `output_${year}${month}${day}_${hour}${minute}${second}.png`;
-    a.click();
+    if (isIOS()) {
+        downloadImage('output-image');
+        console.log('ios device detected');
+    }
+    else {
+        shareImage('output-image');
+    }
 });
 
 document.getElementById('transfer-button').addEventListener('click', async () => {
