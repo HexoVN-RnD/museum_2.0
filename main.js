@@ -184,6 +184,7 @@ document.querySelector('.modal-footer .btn-primary').addEventListener('click', a
         error.style.display = 'block';
         return;
     }
+    goFullScreen();
     error.style.display = 'none';
     const deviceId = selectedOption.dataset.deviceId;
     const stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId } });
@@ -363,3 +364,17 @@ document.getElementById('transfer-button').addEventListener('click', async () =>
 document.getElementById('qr-button').addEventListener('click', () => {
     qrModal.show();
 });
+
+function goFullScreen() {
+    const elem = document.documentElement;
+
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) { // Firefox
+        elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) { // Chrome, Safari and Opera
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { // IE/Edge
+        elem.msRequestFullscreen();
+    }
+}
