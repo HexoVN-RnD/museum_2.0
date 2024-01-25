@@ -104,7 +104,7 @@ async function shareImage(elementId) {
 
 loadModels();
 
-window.onload = function () {
+window.onload = function() {
     if (isIOS()) {
         imageDownloadButton.textContent = 'Share';
         outputDownloadButton.textContent = 'Share';
@@ -188,16 +188,12 @@ document.querySelector('.modal-footer .btn-primary').addEventListener('click', a
     const deviceId = selectedOption.dataset.deviceId;
     const stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId } });
     const webcam = document.getElementById('webcam-video');
-    const canvas = document.getElementById('canvas');
-
     webcam.srcObject = stream;
-    await new Promise((resolve) => {
-        webcam.onplay = resolve;
-    });
+    await webcam.play();
+    webcam.style.display = 'block'; // Show the video element
+    const canvas = document.getElementById('canvas');
     canvas.width = webcam.videoWidth;
     canvas.height = webcam.videoHeight;
-    webcam.style.display = 'block'; // Show the video element
-
     webcam.addEventListener('click', () => {
         canvas.getContext('2d').drawImage(webcam, 0, 0);
         document.getElementById('captured-image').src = canvas.toDataURL('image/png');
