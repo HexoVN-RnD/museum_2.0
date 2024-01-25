@@ -193,8 +193,16 @@ document.querySelector('.modal-footer .btn-primary').addEventListener('click', a
     await webcam.play();
     webcam.style.display = 'block'; // Show the video element
     const canvas = document.getElementById('canvas');
-    canvas.width = webcam.videoWidth;
-    canvas.height = webcam.videoHeight;
+    // Check the aspect ratio of the video
+    if (webcam.videoWidth < webcam.videoHeight) {
+        // The video is in portrait mode
+        canvas.width = webcam.videoHeight;
+        canvas.height = webcam.videoWidth;
+    } else {
+        // The video is in landscape mode
+        canvas.width = webcam.videoWidth;
+        canvas.height = webcam.videoHeight;
+    }
     webcam.addEventListener('click', () => {
         canvas.getContext('2d').drawImage(webcam, 0, 0);
         document.getElementById('captured-image').src = canvas.toDataURL('image/png');
