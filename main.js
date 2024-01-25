@@ -188,16 +188,17 @@ document.querySelector('.modal-footer .btn-primary').addEventListener('click', a
     const deviceId = selectedOption.dataset.deviceId;
     const stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId } });
     const webcam = document.getElementById('webcam-video');
-    webcam.srcObject = stream;
-    await webcam.play();
-    webcam.style.display = 'block'; // Show the video element
     const canvas = document.getElementById('canvas');
 
     webcam.addEventListener('loadedmetadata', () => {
         canvas.width = webcam.videoWidth;
         canvas.height = webcam.videoHeight;
     });
-    
+
+    webcam.srcObject = stream;
+    await webcam.play();
+    webcam.style.display = 'block'; // Show the video element
+
     webcam.addEventListener('click', () => {
         canvas.getContext('2d').drawImage(webcam, 0, 0);
         document.getElementById('captured-image').src = canvas.toDataURL('image/png');
