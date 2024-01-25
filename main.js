@@ -193,9 +193,10 @@ document.querySelector('.modal-footer .btn-primary').addEventListener('click', a
     await webcam.play();
     webcam.style.display = 'block'; // Show the video element
     const canvas = document.getElementById('canvas');
-    canvas.width = webcam.videoWidth;
-    canvas.height = webcam.videoHeight;
+    
     webcam.addEventListener('click', () => {
+        canvas.width = webcam.videoWidth;
+        canvas.height = webcam.videoHeight;
         canvas.getContext('2d').drawImage(webcam, 0, 0);
         document.getElementById('captured-image').src = canvas.toDataURL('image/png');
         imgModal.show();
