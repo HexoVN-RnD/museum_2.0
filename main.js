@@ -190,13 +190,12 @@ document.querySelector('.modal-footer .btn-primary').addEventListener('click', a
     const webcam = document.getElementById('webcam-video');
     const canvas = document.getElementById('canvas');
 
-    webcam.addEventListener('loadedmetadata', () => {
-        canvas.width = webcam.videoWidth;
-        canvas.height = webcam.videoHeight;
-    });
-
     webcam.srcObject = stream;
-    await webcam.play();
+    await new Promise((resolve) => {
+        webcam.onplay = resolve;
+    });
+    canvas.width = webcam.videoWidth;
+    canvas.height = webcam.videoHeight;
     webcam.style.display = 'block'; // Show the video element
 
     webcam.addEventListener('click', () => {
