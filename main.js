@@ -9,6 +9,8 @@ const outModal = new bootstrap.Modal(document.getElementById('outputModal'));
 const qrModal = new bootstrap.Modal(document.getElementById('qrModal'));
 const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
 const settingsModal = new bootstrap.Modal(document.getElementById('settingsModal'));
+const loadingScreen = document.getElementById('loading-screen');
+const errorText = document.getElementById('error-message-text');
 
 // Define the style options
 const styleOptions = [
@@ -46,19 +48,29 @@ outputImageSizeValue.textContent = outputImageSizeInput.value;
 styleStrengthValue.textContent = styleStrengthInput.value;
 
 async function loadModels() {
-    console.log('Loading models..');
+    try {
+        loadingScreen.style.display = 'flex';
+        console.log('Loading models..');
 
-    mobileNetStyleModel = await tf.loadGraphModel('model_inception_lite/model.json');
-    console.log('MobileNet Style Model loaded.');
+        mobileNetStyleModel = await tf.loadGraphModel('model_inception_lite/model.json');
+        console.log('MobileNet Style Model loaded.');
 
-    // inceptionStyleModel = await tf.loadGraphModel('model_inception/model.json');
-    // console.log('Inception Style Model loaded.');
+        // inceptionStyleModel = await tf.loadGraphModel('model_inception/model.json');
+        // console.log('Inception Style Model loaded.');
 
-    // originalTransformerModel = await tf.loadGraphModel('model_transformer/model.json');
-    // console.log('Original Transformer Model loaded.');
+        // originalTransformerModel = await tf.loadGraphModel('model_transformer/model.json');
+        // console.log('Original Transformer Model loaded.');
 
-    separableTransformerModel = await tf.loadGraphModel('model_transformer_lite/model.json');
-    console.log('Separable Transformer Model loaded.');
+        separableTransformerModel = await tf.loadGraphModel('model_transformer_lite/model.json');
+        console.log('Separable Transformer Model loaded.');
+        loadingScreen.style.display = 'none';
+    } catch (error) {
+        console.error('Error during style transfer:', error);
+        // Display an error message to the user
+        errorText.textContent = 'Cannot load the models. Please try refreshing the page.';
+        loadingScreen.style.display = 'none';
+        errorModal.show();
+    }
 }
 
 
@@ -105,7 +117,7 @@ async function shareImage(elementId) {
 
 loadModels();
 
-window.onload = function() {
+window.onload = function () {
     if (isIOS()) {
         imageDownloadButton.textContent = 'Share';
         outputDownloadButton.textContent = 'Share';
@@ -195,7 +207,7 @@ document.querySelector('.modal-footer .btn-primary').addEventListener('click', a
     await webcam.play();
     webcam.style.display = 'block'; // Show the video element
     const canvas = document.getElementById('canvas');
-    
+
     webcam.addEventListener('click', () => {
         canvas.width = webcam.videoWidth;
         canvas.height = webcam.videoHeight;
@@ -245,7 +257,7 @@ outputDownloadButton.addEventListener('click', () => {
 
 document.getElementById('transfer-button').addEventListener('click', async () => {
     try {
-        document.getElementById('loading-screen').style.display = 'flex';
+        loadingScreen.style.display = 'flex';
         const imgElement = document.getElementById('captured-image');
 
         // Resize the content image
@@ -347,7 +359,7 @@ document.getElementById('transfer-button').addEventListener('click', async () =>
         document.getElementById('output-image').src = outputCanvas.toDataURL('image/png');
         outModal.show();
         imgModal.hide();
-        document.getElementById('loading-screen').style.display = 'none';
+        loadingScreen.style.display = 'none';
 
         // Dispose tensors
         img.dispose();
@@ -358,8 +370,8 @@ document.getElementById('transfer-button').addEventListener('click', async () =>
     } catch (error) {
         console.error('Error during style transfer:', error);
         // Display an error message to the user
-        document.getElementById('error-message-text').textContent = 'The image size is too large for the current device to handle. Please try reducing the style image or output image size.';
-        document.getElementById('loading-screen').style.display = 'none';
+        errorText.textContent = 'The image size is too large for the current device to handle. Please try reducing the style image or output image size.';
+        loadingScreen.style.display = 'none';
         errorModal.show();
     }
 });
