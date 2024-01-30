@@ -116,9 +116,9 @@ select option {
     font-size: 2rem;
 }
 
-#error-message-text {
+/* #error-message-text {
     font-size: 1.5rem;
-}
+} */
 
 .error-message {
     display: flex;
