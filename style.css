@@ -79,7 +79,7 @@ select option {
     left: 10px;
 }
 
-@media (max-width: 750px) {
+@media (max-width: 768px) {
     .overlay-button {
         font-size: 3rem;
         padding: 2rem;
@@ -116,18 +116,14 @@ select option {
     font-size: 2rem;
 }
 
-#error-message {
+#error-message-text {
     font-size: 1.5rem;
 }
 
-#error-message-box {
+.error-message {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-#error-message-box .fas {
-    margin-right: 1rem;
 }
 
 .btn.btn-primary#webcam-button,

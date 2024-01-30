@@ -138,6 +138,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         dropdown.appendChild(option);
     });
     camModal.show();
+    errorModal.show(); // Debug
 });
 
 // Add the options to the dropdown
