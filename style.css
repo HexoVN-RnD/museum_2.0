@@ -136,3 +136,7 @@ select option {
     outline: none;
     box-shadow: none;
 }
+
+#settingsModal {
+    z-index: 9000;
+}
