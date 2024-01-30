@@ -358,6 +358,7 @@ document.getElementById('transfer-button').addEventListener('click', async () =>
 
         // Show the result
         document.getElementById('output-image').src = outputCanvas.toDataURL('image/png');
+        document.getElementById('output-image-button').style.display = 'block';
         outModal.show();
         imgModal.hide();
         loadingScreen.style.display = 'none';

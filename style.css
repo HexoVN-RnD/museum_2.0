@@ -72,6 +72,13 @@ select option {
     right: 10px;
 }
 
+#output-image-button {
+    background-color: transparent;
+    border: none;
+    bottom: 10px;
+    left: 10px;
+}
+
 #webcam-button {
     background-color: transparent;
     border: none;
