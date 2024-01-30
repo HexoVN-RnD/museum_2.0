@@ -368,6 +368,10 @@ document.getElementById('qr-button').addEventListener('click', () => {
     qrModal.show();
 });
 
+document.getElementById('image-settings-button').addEventListener('click', () => {
+    settingsModal.show();
+});
+
 function goFullScreen() {
     const elem = document.documentElement;
 
