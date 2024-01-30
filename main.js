@@ -213,6 +213,7 @@ document.querySelector('.modal-footer .btn-primary').addEventListener('click', a
         canvas.height = webcam.videoHeight;
         canvas.getContext('2d').drawImage(webcam, 0, 0);
         document.getElementById('captured-image').src = canvas.toDataURL('image/png');
+        document.getElementById('captured-image-button').style.display = 'block';
         imgModal.show();
     });
     camModal.hide();
@@ -378,10 +379,6 @@ document.getElementById('transfer-button').addEventListener('click', async () =>
 
 document.getElementById('qr-button').addEventListener('click', () => {
     qrModal.show();
-});
-
-document.getElementById('image-settings-button').addEventListener('click', () => {
-    settingsModal.show();
 });
 
 function goFullScreen() {

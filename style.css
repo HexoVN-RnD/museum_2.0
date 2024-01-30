@@ -65,6 +65,13 @@ select option {
     padding: 3rem;
 }
 
+#captured-image-button {
+    background-color: transparent;
+    border: none;
+    bottom: 10px;
+    right: 10px;
+}
+
 #webcam-button {
     background-color: transparent;
     border: none;
@@ -126,13 +133,13 @@ select option {
     align-items: center;
 }
 
-.btn.btn-primary#webcam-button,
-.btn.btn-primary#settings-button {
+.btn.btn-primary,
+.btn.btn-primary {
     border: none;
 }
 
-.btn.btn-primary#webcam-button:focus,
-.btn.btn-primary#settings-button:focus {
+.btn.btn-primary:focus,
+.btn.btn-primary:focus {
     outline: none;
     box-shadow: none;
 }
