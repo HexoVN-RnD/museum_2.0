@@ -358,7 +358,7 @@ document.getElementById('transfer-button').addEventListener('click', async () =>
     } catch (error) {
         console.error('Error during style transfer:', error);
         // Display an error message to the user
-        document.getElementById('error-message').textContent = 'The image size is too large for the current device to handle. Please try reducing the style image or output image size.';
+        document.getElementById('error-message-text').textContent = 'The image size is too large for the current device to handle. Please try reducing the style image or output image size.';
         document.getElementById('loading-screen').style.display = 'none';
         errorModal.show();
     }
