@@ -8,6 +8,7 @@ const imgModal = new bootstrap.Modal(document.getElementById('imageModal'));
 const outModal = new bootstrap.Modal(document.getElementById('outputModal'));
 const qrModal = new bootstrap.Modal(document.getElementById('qrModal'));
 const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+const settingsModal = new bootstrap.Modal(document.getElementById('settingsModal'));
 
 // Define the style options
 const styleOptions = [

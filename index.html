@@ -14,9 +14,12 @@
     <div id="webcam-container" class="full-width center">
         <video id="webcam-video" class="full-width" style="display: none;"></video>
     </div>
-    <button id="webcam-button" class="btn btn-primary overlay-button"><i class="fas fa-camera"></i></button>
-    <button id="settings-button" class="btn btn-primary overlay-button" data-bs-toggle="modal"
-        data-bs-target="#settingsModal"><i class="fas fa-cog"></i></button>
+    <div>
+        <button id="webcam-button" class="btn btn-primary overlay-button"><i class="fas fa-camera"></i></button>
+        <button id="settings-button" class="btn btn-primary overlay-button" data-bs-toggle="modal"
+            data-bs-target="#settingsModal"><i class="fas fa-cog"></i></button>
+    </div>
+
     <canvas id="canvas" class="d-none"></canvas>
 
     <!-- Webcam Modal -->
@@ -137,11 +140,11 @@
                 </div>
                 <div class="modal-body">
                     <div class="container">
-                        <div class="row mx-5 my-5">
-                            <div class="col-4">
+                        <div class="row mx-lg-5 mx-3 my-5">
+                            <div class="col-md-4">
                                 <label for="style-image" class="form-label">Style Image</label>
                             </div>
-                            <div class="col-8" style="display: flex; justify-content: flex-end; align-items: center;">
+                            <div class="col-md-8 d-flex justify-content-end align-items-center">
                                 <div class="dropdown" id="styleDropdownDiv">
                                     <button class="btn btn-secondary dropdown-toggle" type="button"
                                         id="dropdownMenuStyleButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -155,15 +158,15 @@
                                 <input type="file" id="file-input" accept="image/*" style="display: none;">
                             </div>
                         </div>
-                        <div class="row mx-5 mb-5">
+                        <div class="row mx-lg-5 mx-3 mb-5">
                             <img id="style-image" src="style1.jpg" alt="style image" class="img-fluid full-width">
                         </div>
 
-                        <div class="row mx-5 mb-2">
+                        <div class="row mx-lg-5 mx-3 mb-2">
                             <label for="style-image-size" class="form-label">Style Image Size</label>
                         </div>
 
-                        <div class="row mx-5 mb-5">
+                        <div class="row mx-lg-5 mx-3 mb-5">
                             <div class="col-10">
                                 <input type="range" min="240" max="720" value="240" class="form-range centered"
                                     id="style-image-size">
@@ -174,11 +177,11 @@
                             </div>
                         </div>
 
-                        <div class="row mx-5 mb-2">
+                        <div class="row mx-lg-5 mx-3 mb-2">
                             <label for="output-image-size" class="form-label">Output Image Size</label>
                         </div>
 
-                        <div class="row mx-5 mb-5">
+                        <div class="row mx-lg-5 mx-3 mb-5">
                             <div class="col-10">
                                 <input type="range" min="240" max="720" value="480" class="form-range centered"
                                     id="output-image-size">
@@ -190,11 +193,11 @@
                             </div>
                         </div>
 
-                        <div class="row mx-5 mb-2">
+                        <div class="row mx-lg-5 mx-3 mb-2">
                             <label for="style-strength" class="form-label">Style Strength</label>
                         </div>
 
-                        <div class="row mx-5 mb-4">
+                        <div class="row mx-lg-5 mx-3 mb-4">
                             <div class="col-10">
                                 <input type="range" min="1" max="100" value="100" class="form-range centered"
                                     id="style-strength">
@@ -205,6 +208,10 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button id="close-button" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

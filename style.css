@@ -12,7 +12,6 @@ body {
     background-color: black;
     color: white;
     border: 1px solid white;
-    /* Add a white border */
 }
 
 /* Style the dropdown list */
@@ -80,10 +79,10 @@ select option {
     left: 10px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 750px) {
     .overlay-button {
         font-size: 3rem;
-        padding: 3rem;
+        padding: 2rem;
     }
 }
 
@@ -114,11 +113,11 @@ select option {
 }
 
 #errorModalLabel {
-    font-size: 2rem; /* Increase the font size of the title */
+    font-size: 2rem;
 }
 
 #error-message {
-    font-size: 1.5rem; /* Increase the font size of the error message */
+    font-size: 1.5rem;
 }
 
 #error-message-box {
@@ -128,5 +127,16 @@ select option {
 }
 
 #error-message-box .fas {
-    margin-right: 1rem; /* Add space below the icon */
+    margin-right: 1rem;
+}
+
+.btn.btn-primary#webcam-button,
+.btn.btn-primary#settings-button {
+    border: none;
+}
+
+.btn.btn-primary#webcam-button:focus,
+.btn.btn-primary#settings-button:focus {
+    outline: none;
+    box-shadow: none;
 }
