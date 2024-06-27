@@ -4,7 +4,7 @@ An image style transfer website using TensorFlow.js
 Based on this project: https://github.com/reiinakano/arbitrary-image-stylization-tfjs
 
 # How to use
-Run locally or go to our live website: https://museum.hexogon.work.gd/
+Run locally or go to our live website: [Website](https://hexovn-rnd.github.io/museum_2.0/)
 
 Select the camera you want to use, you can reselect anytime by pressing the camera button.
 
